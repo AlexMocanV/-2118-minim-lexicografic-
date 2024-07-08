@@ -1,0 +1,52 @@
+//#2118 minim lexicografic ALGORITMUL LUI BOOTH
+#include <fstream>
+#include <cstring>
+#include <vector>
+std::string nume="minlex";
+std::ifstream fin(nume+".in");
+std::ofstream fout(nume+".out");
+
+int indice(std::string cu)
+{
+    int n=cu.length();
+    std::string c=cu+cu;
+    std::vector<int>f(2*n,-1);
+    int k=0;
+    for(int j=1;j<c.length();j++)
+    {
+        int i = f[j-k-1];
+        while(i!=-1&&c[j]!=c[i+k+1])
+        {
+            if(c[j]<c[i+k+1])
+            {
+                k=j-i-1;
+            }
+            i=f[i];
+        }
+        if(c[j]!=c[i+k+1])
+        {
+            if(c[j]<c[k])
+            {
+                k=j;    
+            }
+            f[j-k]=-1;
+        }
+        else
+        {
+            f[j-k]=i+1;
+        }
+    }
+    return k;
+}
+
+int i=0,k=0;
+std::string c;
+std::string nou;
+int main()
+{
+    std::ios_base::sync_with_stdio(false);
+    fin>>c;
+    fout<<indice(c);
+    return 0;
+}
+//if(c[i]=='a'||c[i]=='o'||c[i]=='u'||c[i]=='e'||c[i]=='i'||c[i]=='A'||c[i]=='O'||c[i]=='U'||c[i]=='E'||c[i]=='I')
